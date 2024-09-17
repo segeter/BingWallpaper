@@ -51,6 +51,12 @@ std::vector<T> HttpGet(boost::asio::io_context& ioc,
   return std::move(res.body());
 }
 
+void SetWorkDirectory() {
+  wchar_t path[MAX_PATH];
+  GetTempPath(MAX_PATH, path);
+  SetCurrentDirectory(path);
+}
+
 std::vector<char> DownloadImage(boost::asio::io_context& ioc,
                                 boost::asio::ssl::context& ctx,
                                 std::string_view url) {
@@ -90,6 +96,7 @@ int main(int argc, char* argv[]) {
   boost::asio::ssl::context ctx(boost::asio::ssl::context::tlsv12_client);
   ctx.set_verify_mode(boost::asio::ssl::verify_none);
   try {
+    SetWorkDirectory();
     std::cout << "Download image..." << std::endl;
     auto img_data = DownloadImage(ioc, ctx, kApiUrl);
     std::cout << "Save image..." << std::endl;
@@ -99,5 +106,6 @@ int main(int argc, char* argv[]) {
     std::cout << "Completed" << std::endl;
   } catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
+    system("pause");
   }
 }

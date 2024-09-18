@@ -60,8 +60,7 @@ void SetWorkDirectory() {
 std::vector<char> DownloadImage(boost::asio::io_context& ioc,
                                 boost::asio::ssl::context& ctx,
                                 std::string_view url) {
-  boost::urls::url_view v = url;
-  auto data = HttpGet(ioc, ctx, v);
+  auto data = HttpGet(ioc, ctx, url);
   auto jv = boost::json::parse({data.data(), data.size()});
   auto img_url = jv.at("images").as_array().at(0).at("url").as_string();
   return HttpGet(ioc, ctx, img_url);

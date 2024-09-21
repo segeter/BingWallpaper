@@ -27,16 +27,8 @@ static constexpr std::string_view kImgUrlFormat = "https://cn.bing.com{}";
 template <class T = char>
 std::vector<T> HttpGet(asio::io_context& ioc, asio::ssl::context& ctx,
                        const urls::url_view& url) {
-  std::string port;
-  if (!url.has_port()) {
-    if (url.scheme_id() == urls::scheme::http) {
-      port = "80";
-    } else if (url.scheme_id() == urls::scheme::https) {
-      port = "443";
-    } else {
-      assert(false);
-    }
-  } else {
+  std::string port = "443";
+  if (url.has_port()) {
     port = url.port();
   }
   auto host = url.host();

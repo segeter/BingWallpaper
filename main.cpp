@@ -100,7 +100,7 @@ void SetDesktopWallpaper(const std::filesystem::path& img_path) {
 }
 
 int main(int argc, char* argv[]) {
-  std::string lcid = "en-us";
+  std::string lcid = "en-US";
   if (argc > 1) {
     lcid = argv[1];
   }

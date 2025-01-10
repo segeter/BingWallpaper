@@ -41,7 +41,10 @@ $LCID = $Local.LCID
 $Time = $(Get-Date $Local.StartTime).ToLocalTime().AddMinutes(1)
 
 $Action = New-ScheduledTaskAction -Execute "$FilePath" -Argument $LCID -WorkingDirectory %temp%
-$Trigger = New-ScheduledTaskTrigger -Daily -At $Time
+$Trigger = @(
+    New-ScheduledTaskTrigger -Daily -At $Time
+    New-ScheduledTaskTrigger -AtLogOn
+)
 $Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 $Task = New-ScheduledTask -Description $Description -Action $Action -Trigger $Trigger -Settings $Settings
 Register-ScheduledTask -TaskName $TaskName -InputObject $Task
